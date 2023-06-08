@@ -4,6 +4,7 @@ import { Endereco } from '../enderecos/enderecoEntity.js'
 import { mapeiaPlano } from '../utils/planoSaudeUtils.js'
 import { encryptPassword } from '../utils/senhaUtils.js'
 import { Paciente } from './pacienteEntity.js'
+import { AppError, Status } from '../error/ErrorHandler.js'
 
 export const criarPaciente = async (
   req: Request,
@@ -86,12 +87,11 @@ export const lerPaciente = async (
       endereco: true
     }
   })
-
-  if (paciente === null) {
-    res.status(404).json('Paciente não encontrado!')
-  } else {
-    res.status(200).json(paciente)
+  if(!paciente || paciente.estaAtivo==false){
+    throw new AppError("Não encontramos um paciente com este id",Status.NOT_FOUND)
   }
+
+    res.status(200).json(paciente)
 }
 
 // update
@@ -112,11 +112,6 @@ export const atualizarPaciente = async (
   } = req.body
 
   const { id } = req.params
-
-  if (possuiPlanoSaude === true && planosSaude !== undefined) {
-    // transforma array de numbers em array de strings com os nomes dos planos definidos no enum correspondente
-    planosSaude = mapeiaPlano(planosSaude)
-  }
 
   try {
     const paciente = await AppDataSource.manager.findOne(Paciente, {
@@ -202,5 +197,7 @@ export const desativaPaciente = async (
     res.json({
       message: 'Paciente desativado!'
     })
+  }else{
+    throw new AppError("Paciente não encontrado",Status.NOT_FOUND)
   }
 }

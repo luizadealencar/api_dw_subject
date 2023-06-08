@@ -31,9 +31,7 @@ app.use(cors(corsOpts))
 app.use(express.json())
 
 AppDataSource.initialize()
-  .then(() => {
-    console.log('App Data Source inicializado')
-  })
+ 
   .catch((error) => {
     console.error(error)
   })
@@ -41,7 +39,7 @@ AppDataSource.initialize()
 rotaPaciente(app)
 rotaAuth(app)
 app.use(errorMiddleware)
-// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+
 app.listen(process.env.SERVER_PORT, () => { console.log(`Servidor rodando na porta ${process.env.SERVER_PORT}`) }
 )
 
