@@ -6,7 +6,8 @@
    "type": "module",
    "scripts": {
       "dev": "tsc-watch --onSuccess \"node ./build/server.js\"",
-      "start": "tsc && node ./build/server.js"
+      "build":"tsc",
+      "start": "node ./build/server.js"
    },
    "repository": {
       "type": "git"
