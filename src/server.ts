@@ -38,6 +38,7 @@ AppDataSource.initialize()
 
 rotaPaciente(app)
 rotaAuth(app)
+app.use('/', (_, res) => { res.json({ message: 'use /paciente na URL para acessar os pacientes :)' }) })
 app.use(errorMiddleware)
 
 app.listen(process.env.SERVER_PORT, () => { console.log(`Servidor rodando na porta ${process.env.SERVER_PORT}`) }
